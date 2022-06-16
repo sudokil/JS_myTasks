@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <title>Calculator</title>
+        
+        <meta charset="utf-8">
+        
+        <style>
+            .calc {
+                display: grid;
+                width: 415px;
+                height: 380px;
+                background: rgb(3, 80, 182);
+                border: 5px solid rgb(3, 80, 182);
+                gap: 5px;
+                grid-template-columns: repeat(4, 100px);
+                grid-template-rows: repeat(6, 50px);
+                grid-template-areas: "s s s s" "s s s s" "b b b b" "b b b b" "b b b b" "b b b b" "b b b b";
+                border-radius: 5px;
+            }
+            .screen {
+                grid-area: s;
+                background: rgb(11, 64, 85);
+                color: rgb(255, 255, 255);
+                font: 50px/82px Cambria;
+                text-align: right;
+                padding: 10px;
+                border-radius: 5px;
+            }
+            .button {
+                background: rgba(50, 204, 209, 0.315);
+                color: rgb(255, 255, 255);
+                font: 30px/48px Cambria;
+                text-align: center;
+                box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+                border-radius: 8px;
+                user-select: none;
+            }
+            .button:hover {
+                cursor: pointer;
+            }
+            .button:active {
+                box-shadow: inset 1px 1px 5px rgba(0,0,0,0.5);
+            }
+            .digit, .sign, .point {
+                background: rgba(179, 213, 226, 0.993);
+                color: black;
+            }
+            .eval {
+                background: rgb(14, 25, 131);
+                color: rgb(0, 255, 0);
+            }
+            sup {
+                font-size: 15px;
+            }
+            span {
+                margin-top: -10px;
+                display: inline-block;
+            }
+            .clear {
+                color: rgb(51, 255, 0);
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div class="calc">
+            <div class="screen">0</div>
+            <div class="button oneonx">1/x</div>
+            <div class="button square"><span>x<sup>2</sup></span></div>
+            <div class="button clear">C</div>
+            <div class="button action" data-action="divide">&divide;</div>
+            <div class="button digit">7</div>
+            <div class="button digit">8</div>
+            <div class="button digit">9</div>
+            <div class="button action" data-action="multiple">&times;</div>
+            <div class="button digit">4</div>
+            <div class="button digit">5</div>
+            <div class="button digit">6</div>
+            <div class="button action" data-action="minus">&minus;</div>
+            <div class="button digit">1</div>
+            <div class="button digit">2</div>
+            <div class="button digit">3</div>
+            <div class="button action" data-action="plus">&plus;</div>
+            <div class="button sign">+/-</div>
+            <div class="button digit">0</div>
+            <div class="button point">.</div>
+            <div class="button eval">&equals;</div>
+        </div>
+        
+        <script>
+            let scr = document.querySelector('.screen');
+            let errorflag = false;
+            let emptyflag = true;
+            let memory = null;
+            let action = null;
+            
+            document.querySelector('.clear').addEventListener('click', function(){
+                scr.innerHTML = 0;
+                memory = null;
+                action = null;
+                emptyflag = true;
+                errorflag = false;
+            });
+            
+            document.querySelector('.eval').addEventListener('click', function(){
+                if ((memory !== null) && action && !errorflag) {
+                    evaluate();
+                    memory = null;
+                    action = null;
+                    emptyflag = true;
+                }
+            });
+            
+            document.querySelectorAll('.action').forEach(item => item.addEventListener('click', function(e){
+                if (!errorflag) {
+                    if ((memory !== null) && action) {
+                        evaluate();
+                    }
+                    memory = +scr.innerHTML;
+                    action = e.target.getAttribute('data-action');
+                    emptyflag = true;
+                }
+            }));
+            
+            document.querySelectorAll('.digit').forEach(item => item.addEventListener('click', function(e){
+                if (!errorflag) {
+                    if (emptyflag || (scr.innerHTML == '0')) {
+                        scr.innerHTML = e.target.innerHTML;
+                        emptyflag = false;
+                    } else {
+                        if (scr.innerHTML.replace(/\D/g, '').length < 13) {
+                            scr.innerHTML += e.target.innerHTML;
+                        }
+                    }
+                }
+            }));
+            
+            document.querySelector('.point').addEventListener('click', function(){
+                if (!errorflag) {
+                    if (emptyflag || (scr.innerHTML == '0')) {
+                        scr.innerHTML = '0.';
+                        emptyflag = false;
+                    } else {
+                        if (!scr.innerHTML.includes('.')) {
+                            scr.innerHTML += '.';
+                        }
+                    }
+                }
+            });
+            
+            document.querySelector('.sign').addEventListener('click', function(){
+                if (!errorflag) {
+                    if (scr.innerHTML.includes('-')) {
+                        scr.innerHTML = scr.innerHTML.slice(1);
+                    } else {
+                        scr.innerHTML = '-' + scr.innerHTML;
+                    }
+                }
+            });
+            
+            document.querySelector('.oneonx').addEventListener('click', function(){
+                if (!errorflag) {
+                    render(1 / +scr.innerHTML);
+                }
+            });
+            
+            document.querySelector('.square').addEventListener('click', function(){
+                if (!errorflag) {
+                    render(+scr.innerHTML * +scr.innerHTML);
+                }
+            });
+            
+            function evaluate() {
+                switch (action) {
+                    case 'divide':
+                        render(memory / +scr.innerHTML);
+                    break;
+                    case 'multiple':
+                        render(memory * +scr.innerHTML);
+                    break;
+                    case 'minus':
+                        render(memory - +scr.innerHTML);
+                    break;
+                    case 'plus':
+                        render(memory + +scr.innerHTML);
+                    break;
+                }
+            }
+            
+            function render(num) {
+                if (isNaN(num) || (Math.abs(num) >= 100000000000000)) {
+                    errorflag = true;
+                    scr.innerHTML = 'ERROR!';
+                } else if (Math.abs(num) >= 1) {
+                    scr.innerHTML = parseFloat(num.toPrecision(13));
+                } else if (Math.abs(num) >= 0.000001) {
+                    scr.innerHTML = parseFloat(num.toFixed(12));
+                } else {
+                    num = num.toFixed(12);
+                    while (num.match(/^\d+\.\d*0$/)) {
+                        num = num.slice(0, -1);
+                    }
+                    if (num.match(/^\d+\.$/)) num = num.slice(0, -1);
+                    scr.innerHTML = num;
+                }
+            }
+        </script>
+    </body>
+</html>

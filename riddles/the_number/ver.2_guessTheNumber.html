@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    
+    <title>Guess the Number v.02</title>
+    
+    <script>
+        let num = Math.floor(Math.random() * 100 + 1);
+        
+        let answerIsRight = false;
+        
+        upper: for (let i = 0; i < 10; i++) {
+            let usernum = parseInt(prompt('Введите число:'));
+            
+            if (isNaN(usernum)) {
+                alert('Я просил ввести число!');
+                continue;
+            }
+            
+            switch (Math.sign(usernum - num)) {
+                case 1:
+                    alert('Надо меньше');
+                    break;
+                case -1:
+                    alert('Надо больше');
+                    break;
+                default:
+                    answerIsRight = true;
+                    break upper;
+            }
+        }
+        
+        if (answerIsRight) {
+            alert('Вы угадали!');
+        } else {
+            alert('Вы не угадали!');
+        }
+    </script>
+</head>
+<body></body>
+</html>

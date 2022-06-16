@@ -1,0 +1,37 @@
+.table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    width: 600px;
+    display: table;
+}
+.tr {
+    display: table-row;
+}
+.td, .th {
+    display: table-cell;
+    vertical-align: middle;
+    width: 50px;
+    height: 60px;
+    text-align: center;
+    font-size: 30px;
+    font: 40px/40px Consolas;
+}
+.th {
+    background: rgb(58, 2, 2);
+    color: rgb(255, 231, 93);
+    font-weight: bold;
+}
+.odd .td:nth-child(odd),
+.even .td:nth-child(even) {
+    background: rgb(255, 255, 255);
+}
+.even .td:nth-child(odd),
+.odd .td:nth-child(even) {
+    background: #db9b95;
+}
+.start {
+    background: rgb(255, 0, 43) !important;
+}
+.finish {
+    background: red !important;
+}

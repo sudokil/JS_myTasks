@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    
+    <title>Answer the Riddle</title>
+    
+    <script>
+        /*
+         * 1) выводим загадку
+         * 2) получаем ответ
+         * 3) сравниваем ответ с правильным
+         * 4) выводим результат
+         */
+        let question = 'Зимой и летом одним цветом';
+        
+        //let answer = 'елка';
+        let answer = ['елка', 'кровища', 'лампочка', 'свитер']; // Array
+        
+        let answerIsRight = false;
+        
+        let useranswer = prompt(question).toLowerCase().replace('ё', 'е');
+        
+        for (let i = 0; i < answer.length; i++) {
+            if (useranswer == answer[i]) {
+                alert('Вы угадали!');
+                answerIsRight = true;
+                break;
+            }
+        }
+        
+        if (!answerIsRight) alert('Вы не угадали!');
+        
+        /*
+        if (useranswer == answer) {
+            alert('Вы угадали!');
+        } else {
+            alert('Вы не угадали!');
+        }
+        
+        useranswer == answer ? alert('Вы угадали!') : alert('Вы не угадали!');
+        */
+    </script>
+</head>
+<body></body>
+</html>

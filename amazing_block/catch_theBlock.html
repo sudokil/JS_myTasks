@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        
+        <title>Catch the Block!!!</title>
+        
+        <style>
+            body {
+                margin: 0;
+            }
+            .outer {
+                height: 800px;
+                width: 800px;
+                background: pink;
+                margin: 50px auto;
+                position: relative;
+            }
+            .inner {
+                width: 100px;
+                height: 100px;
+                position: absolute;
+                background: green;
+                top: 350px;
+                left: 350px;
+            }
+        </style>
+        
+        <script>
+            /*
+             * Зеленый блок при наведении мыши убегает в противоположную сторону,
+             * не выходя за край родительского блока.
+             */
+            document.addEventListener('DOMContentLoaded', function(){
+                let block = document.querySelector('.inner');
+                
+                block.addEventListener('mouseenter', func);
+                
+                function func(event) {
+                    let toLeft = Math.round((block.getBoundingClientRect().left + block.getBoundingClientRect().right - event.clientX * 2) / 2) + parseInt(getComputedStyle(block).left);
+                    let toTop = Math.round((block.getBoundingClientRect().top + block.getBoundingClientRect().bottom - event.clientY * 2) / 2) + parseInt(getComputedStyle(block).top);
+                    if (toLeft < 0) {
+                        toLeft = 0;
+                    } else if (toLeft > 700) {
+                        toLeft = 700;
+                    }
+                    if (toTop < 0) {
+                        toTop = 0;
+                    } else if (toTop > 700) {
+                        toTop = 700;
+                    }
+                    block.setAttribute('style', 'top: ' + toTop + 'px; left: ' + toLeft + 'px;');
+                }
+            });
+        </script>
+    </head>
+    
+    <body>
+        <div class="outer">
+            <div class="inner"></div>
+        </div>
+    </body>
+</html>

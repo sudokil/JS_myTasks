@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        
+        <title>Drag'n'Drop the Block!!!</title>
+        
+        <style>
+            body {
+                margin: 0;
+            }
+            .outer {
+                height: 800px;
+                width: 800px;
+                background: pink;
+                margin: 50px auto;
+                position: relative;
+            }
+            .inner {
+                width: 100px;
+                height: 100px;
+                position: absolute;
+                background: green;
+                top: 350px;
+                left: 350px;
+            }
+            .inner.clicked {
+                background: blue;
+            }
+        </style>
+        
+        <script>
+            /*
+             * Зеленый блок по клику становится синим и движется вместе с курсором,
+             * а по второму клику становится опять зеленым и неподвижным.
+             */
+            document.addEventListener('DOMContentLoaded', function(){
+                let deltaX, deltaY;
+                
+                document.querySelector('.inner').addEventListener('click', function(event) {
+                    this.classList.toggle('clicked');
+                    deltaX = event.clientX - parseInt(getComputedStyle(this).left);
+                    deltaY = event.clientY - parseInt(getComputedStyle(this).top);
+                });
+                
+                document.addEventListener('mousemove', function(event){
+                    let block = document.querySelector('.clicked');
+                    if (block) {
+                        let toLeft = event.clientX - deltaX;
+                        let toTop = event.clientY - deltaY;
+                        block.setAttribute('style', 'top: ' + toTop + 'px; left: ' + toLeft + 'px;');
+                    }
+                })
+            });
+        </script>
+    </head>
+    
+    <body>
+        <div class="outer">
+            <div class="inner"></div>
+        </div>
+    </body>
+</html>

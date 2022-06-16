@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    
+    <title>Guess the Number v.03</title>
+    
+    <script>
+        let num = Math.floor(Math.random() * 100 + 1);
+        
+        while (true) {
+            if (checkNum(num)) break;
+        }
+        
+        alert('Вы угадали!');
+        
+        function checkNum(num) {
+            let usernum = parseInt(prompt('Введите число:'));
+            
+            if (isNaN(usernum)) {
+                alert('Я просил ввести число!');
+                return false;
+            }
+            if (num == usernum) {
+                return true;
+            } else if (num < usernum) {
+                alert('Надо меньше');
+            } else {
+                alert('Надо больше');
+            }
+            return false;
+        }
+    </script>
+</head>
+<body></body>
+</html>

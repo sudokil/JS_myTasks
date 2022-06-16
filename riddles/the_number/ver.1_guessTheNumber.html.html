@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    
+    <title>Guess the Number v.01</title>
+    
+    <script>
+        /*
+         * 1) загадываем случайное число от 1 до 100
+         * 2) спрашиваем у пользователя его число
+         * 3) сравниваем число пользователя с загаданным
+         *    если оно меньше, выводим сообщение "Надо больше"
+         *    если оно больше, выводим сообщение "Надо меньше"
+         *    если числа совпали, сообщаем "Верно!" и прекращаем игру
+         * 4) если не угадано, повторяем с пункта 2
+         */
+        let num = Math.floor(Math.random() * 100 + 1);
+        
+        while (true) {
+            let usernum = parseInt(prompt('Введите число:'));
+            
+            if (isNaN(usernum)) {
+                alert('Я просил ввести число!');
+                continue;
+            }
+            if (num == usernum) {
+                break;
+            } else if (num < usernum) {
+                alert('Надо меньше');
+            } else {
+                alert('Надо больше');
+            }
+        }
+        
+        alert('Вы угадали!');
+    </script>
+</head>
+<body></body>
+</html>
